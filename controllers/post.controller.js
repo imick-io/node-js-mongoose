@@ -11,6 +11,19 @@ exports.all = async (req, res) => {
     });
 };
 
+exports.allWithUser = async (req, res) => {
+  Post.find()
+    .populate("userId", "name")
+    .select("-_id")
+    .then((posts) => {
+      res.status(200).json(posts);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: "Internal server error" });
+    });
+};
+
 exports.create = async (req, res) => {
   const { title, content } = req.body;
   const userId = req.user?._id;
